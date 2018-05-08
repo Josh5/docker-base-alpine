@@ -1,47 +1,60 @@
-FROM alpine:3.6
+FROM alpine:3.7
+MAINTAINER Josh.5 "jsunnex@gmail.com"
 
-MAINTAINER Josh5
-
+################
+### CONFIG:
+###
 # set version for s6 overlay
 ARG OVERLAY_VERSION="v1.21.2.2"
 ARG OVERLAY_ARCH="amd64"
 
+
 # environment variables
 ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
-    HOME="/root" \
+    HOME="/config" \
     TERM="xterm"
+WORKDIR $HOME
 
 RUN \
     echo "**** install build packages ****" && \
-        apk add --no-cache --virtual=build-dependencies \
+        apk add --no-cache \
             curl \
-            tar && \
+            tar \
+            unzip \
+        && \
     echo "**** install runtime packages ****" && \
         apk add --no-cache \
             bash \
+            openssh-server \
             ca-certificates \
             coreutils \
             shadow \
-            tzdata && \
+            tzdata \
+        && \
     echo "**** add s6 overlay ****" && \
         curl -o \
             /tmp/s6-overlay.tar.gz -L \
             "https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}.tar.gz" && \
         tar xfz \
-            /tmp/s6-overlay.tar.gz -C / && \
+            /tmp/s6-overlay.tar.gz -C / \
+        && \
     echo "**** create docker user and make our folders ****" && \
         groupmod -g 1000 users && \
-        useradd -u 911 -U -d /config -s /bin/false docker && \
+        useradd -u 1000 -U -d /config -s /bin/false docker && \
         usermod -G users docker && \
         mkdir -p \
             /app \
             /config \
-            /defaults && \
+            /defaults \
+        && \
+    echo "**** enable remote ssh access ****" && \
+        sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
+        && \
+        echo "root:root" | chpasswd \
+        && \
     echo "**** cleanup ****" && \
-        apk del --purge \
-        build-dependencies && \
-        rm -rf \
-            /tmp/*
+        rm -rf /tmp/*
+
 
 # add local files
 COPY root/ /
