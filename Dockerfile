@@ -11,7 +11,7 @@ ARG OVERLAY_ARCH="amd64"
 
 # environment variables
 ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
-    HOME="/config" \
+    HOME="/root" \
     TERM="xterm"
 WORKDIR $HOME
 
