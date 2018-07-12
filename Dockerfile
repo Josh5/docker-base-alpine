@@ -16,21 +16,18 @@ ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
 WORKDIR $HOME
 
 RUN \
-    echo "**** install build packages ****" && \
-        apk add --no-cache \
-            curl \
-            tar \
-            unzip \
-        && \
-    echo "**** install runtime packages ****" && \
+    echo "**** install base packages ****" && \
         apk add --no-cache \
             bash \
-            openssh-server \
             ca-certificates \
             coreutils \
-            shadow \
-            tzdata \
+            curl \
             nano \
+            openssh-server \
+            shadow \
+            tar \
+            unzip \
+            tzdata \
         && \
     echo "**** add s6 overlay ****" && \
         curl -o \
