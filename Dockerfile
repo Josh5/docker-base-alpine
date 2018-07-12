@@ -30,6 +30,7 @@ RUN \
             coreutils \
             shadow \
             tzdata \
+            nano \
         && \
     echo "**** add s6 overlay ****" && \
         curl -o \
