@@ -14,7 +14,6 @@
 |   | curl  |
 |   | coreutils  |
 |   | nano  |
-|   | openssh-server  |
 |   | shadow  |
 |   | tar  |
 |   | tzdata  |
