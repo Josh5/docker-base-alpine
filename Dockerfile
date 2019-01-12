@@ -1,19 +1,14 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER Josh.5 "jsunnex@gmail.com"
 
 ################
 ### CONFIG:
 ###
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v1.21.2.2"
+ARG OVERLAY_VERSION="v1.21.7.0"
 ARG OVERLAY_ARCH="amd64"
+ENV PS1="$(whoami)@$(hostname):$(pwd)$ "
 
-
-# environment variables
-ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
-    HOME="/root" \
-    TERM="xterm"
-WORKDIR $HOME
 
 RUN \
     echo "**** install base packages ****" && \
@@ -23,7 +18,6 @@ RUN \
             coreutils \
             curl \
             nano \
-            openssh-server \
             shadow \
             tar \
             unzip \
@@ -44,11 +38,6 @@ RUN \
             /app \
             /config \
             /defaults \
-        && \
-    echo "**** enable remote ssh access ****" && \
-        sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
-        && \
-        echo "root:root" | chpasswd \
         && \
     echo "**** cleanup ****" && \
         rm -rf /tmp/*

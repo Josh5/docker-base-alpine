@@ -26,7 +26,7 @@ hosts_config() {
         echo "**** [base-ubuntu] (hosts_config) Configuring hosts default file ****";
         cat /etc/hosts > /config/etc/hosts;
     fi
-    if [[ $(cmp --silent /config/etc/hosts /etc/hosts || echo 1) ]]; then
+    if [[ $(cmp -s /config/etc/hosts /etc/hosts || echo 1) ]]; then
         echo "**** [base-ubuntu] (hosts_config) Updating hosts file ****";
         cat /config/etc/hosts > /etc/hosts;
     fi 
