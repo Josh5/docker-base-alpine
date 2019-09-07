@@ -1,11 +1,11 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Josh.5 "jsunnex@gmail.com"
 
 ################
 ### CONFIG:
 ###
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v1.21.7.0"
+ARG OVERLAY_VERSION="v1.22.1.0"
 ARG OVERLAY_ARCH="amd64"
 ENV PS1="$(whoami)@$(hostname):$(pwd)$ "
 
